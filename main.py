@@ -1,11 +1,6 @@
 import streamlit as st
 from streamlit.components.v1 import html
 
-# ===================================================================
-# 📚 CONFIGURAÇÕES GERAIS E CONSTANTES
-# ===================================================================
-
-# Configuração básica da página
 st.set_page_config(
     layout="wide", 
     page_title="Monitor de Preços - Embed Centauro"
@@ -16,25 +11,14 @@ ALTURA_IFRAME = 500  # Altura em pixels para a visualização
 LARGURA_IFRAME = "100%" # Largura total da coluna
 BUFFER_ALTURA_STREAMLIT = 30 # Buffer para acomodar títulos/espaçamento no Streamlit
 
-# ===================================================================
-# 🔗 LINKS DOS PRODUTOS (AGORA UMA LISTA DE URLS)
-# ===================================================================
-
 # Lista contendo APENAS as URLs dos produtos que você deseja monitorar.
 lista_de_urls = [
     "https://www.centauro.com.br/bermuda-masculina-oxer-ls-basic-new-984889.html?cor=04",
     "https://www.centauro.com.br/bermuda-masculina-oxer-mesh-mescla-983436.html?cor=MS",
-    # ADICIONE QUANTOS LINKS VOCÊ PRECISAR AQUI.
-    # "https://www.outro-produto.com.br/exemplo" 
 ]
-
-# ===================================================================
-# 🖥️ INTERFACE E EXIBIÇÃO
-# ===================================================================
 
 st.title("Monitor de Preços")
 
-# Loop para exibir cada produto dinamicamente usando a lista de URLs
 # Usamos enumerate para obter o índice (i) e a URL (link_produto)
 for i, link_produto in enumerate(lista_de_urls):
     
