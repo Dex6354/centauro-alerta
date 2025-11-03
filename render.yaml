@@ -1,12 +1,11 @@
+# render.yaml
 services:
   - type: web
-    name: alerta-centauro
+    name: centauro-scraper
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: python main.py
-    plan: free
-    envVars:
-      - key: BOT_TOKEN
-        sync: false
-      - key: CHAT_ID
-        sync: false
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app" # Usa Gunicorn para rodar o app Flask
+    plan: free # Define o plano gratuito
+    # Para evitar que o serviço caia em inatividade, defina um health check
+    healthCheckPath: /
+    autoDeploy: true # Ativa o deploy automático a cada push no GitHub
