@@ -14,7 +14,7 @@ BUFFER_ALTURA_STREAMLIT = 30
 # NOVO: Fator de escala para simular o zoom. 
 # 1.0 = 100% (tamanho normal)
 # 0.8 = 80% (conteúdo parece 20% menor)
-FATOR_ZOOM = 0.2
+FATOR_ZOOM = 0.4
 
 # Calcula a largura e altura ajustadas para o 'scale'
 # O navegador renderiza o iframe no tamanho base (ex: 800px) e depois o escala.
