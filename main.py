@@ -37,7 +37,7 @@ st.title("Monitor de Preços")
 # Usamos enumerate para obter o índice (i) e a URL (link_produto)
 for i, link_produto in enumerate(lista_de_urls):
     
-    nome_produto = f"Produto Monitorado #{i + 1}" 
+    nome_produto = f"#{i + 1}" 
     
     st.header(nome_produto)
     
