@@ -1,49 +1,56 @@
 import streamlit as st
 from streamlit.components.v1 import html
 
+# ===================================================================
+# 📚 CONFIGURAÇÕES GERAIS E CONSTANTES
+# ===================================================================
+
 # Configuração básica da página
 st.set_page_config(
     layout="wide", 
     page_title="Monitor de Preços - Embed Centauro"
 )
 
-st.title("Monitor de Preços")
-
 # Dimensões para a visualização (ajuste conforme necessário)
 ALTURA_IFRAME = 700  # Altura em pixels para a visualização
 LARGURA_IFRAME = "100%" # Largura total da coluna
+BUFFER_ALTURA_STREAMLIT = 30 # Buffer para acomodar títulos/espaçamento no Streamlit
 
-# -------------------------------------------------------------------
-# 1. EMBED PARA O PRIMEIRO PRODUTO
-# -------------------------------------------------------------------
-st.header("Bermuda Oxer Basic")
-link1 = "https://www.centauro.com.br/bermuda-masculina-oxer-ls-basic-new-984889.html?cor=04"
+# ===================================================================
+# 🔗 LINKS DOS PRODUTOS (AGORA UMA LISTA DE URLS)
+# ===================================================================
 
-st.markdown(f"**Link Original:** [{link1}]({link1})", unsafe_allow_html=True)
+# Lista contendo APENAS as URLs dos produtos que você deseja monitorar.
+lista_de_urls = [
+    "https://www.centauro.com.br/bermuda-masculina-oxer-ls-basic-new-984889.html?cor=04",
+    "https://www.centauro.com.br/bermuda-masculina-oxer-mesh-mescla-983436.html?cor=MS",
+    # ADICIONE QUANTOS LINKS VOCÊ PRECISAR AQUI.
+    # "https://www.outro-produto.com.br/exemplo" 
+]
 
-# Criação do conteúdo HTML para o iFrame
-# Adicionamos um buffer de altura (+30) para acomodar títulos/espaçamento no Streamlit
-html_content1 = f'<iframe src="{link1}" width="{LARGURA_IFRAME}" height="{ALTURA_IFRAME}px"></iframe>'
+# ===================================================================
+# 🖥️ INTERFACE E EXIBIÇÃO
+# ===================================================================
 
-# Exibe o componente HTML/iFrame
-# O `height` do st.components.v1.html precisa ser ligeiramente maior que a altura do iFrame
-st.components.v1.html(html_content1, height=ALTURA_IFRAME + 30)
+st.title("Monitor de Preços")
 
-# -------------------------------------------------------------------
-# SEPARADOR VISUAL
-# -------------------------------------------------------------------
-st.markdown("---")
+# Loop para exibir cada produto dinamicamente usando a lista de URLs
+# Usamos enumerate para obter o índice (i) e a URL (link_produto)
+for i, link_produto in enumerate(lista_de_urls):
+    
+    # Define um título baseado no índice (Ex: Produto 1, Produto 2, etc.)
+    nome_produto = f"Produto Monitorado #{i + 1}" 
+    
+    st.header(nome_produto)
+    
+    # Exibe o link original
+    st.markdown(f"**Link Original:** [{link_produto}]({link_produto})", unsafe_allow_html=True)
 
-# -------------------------------------------------------------------
-# 2. EMBED PARA O SEGUNDO PRODUTO
-# -------------------------------------------------------------------
-st.header("Bermuda Oxer Mesh")
-link2 = "https://www.centauro.com.br/bermuda-masculina-oxer-mesh-mescla-983436.html?cor=MS"
+    # Criação do conteúdo HTML para o iFrame
+    html_content = f'<iframe src="{link_produto}" width="{LARGURA_IFRAME}" height="{ALTURA_IFRAME}px"></iframe>'
 
-st.markdown(f"**Link Original:** [{link2}]({link2})", unsafe_allow_html=True)
-
-# Criação do conteúdo HTML para o iFrame
-html_content2 = f'<iframe src="{link2}" width="{LARGURA_IFRAME}" height="{ALTURA_IFRAME}px"></iframe>'
-
-# Exibe o componente HTML/iFrame
-st.components.v1.html(html_content2, height=ALTURA_IFRAME + 30)
+    # Exibe o componente HTML/iFrame
+    st.components.v1.html(html_content, height=ALTURA_IFRAME + BUFFER_ALTURA_STREAMLIT)
+    
+    # SEPARADOR VISUAL entre os produtos
+    st.markdown("---")
