@@ -8,7 +8,7 @@ st.set_page_config(
 
 # --- Configurações de Tamanho e Zoom ---
 # O FATOR_ZOOM controla o quão pequeno o conteúdo aparecerá (0.4 = 40% do tamanho original)
-FATOR_ZOOM = 0.4 
+FATOR_ZOOM = 0.5
 
 # Definimos a LARGURA/ALTURA BASE que o iframe renderizará ANTES do scale.
 # Escolha um valor grande o suficiente para o conteúdo caber.
