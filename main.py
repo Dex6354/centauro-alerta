@@ -7,12 +7,7 @@ st.set_page_config(
     page_title="Monitor de Preços - Embed Centauro"
 )
 
-st.title("🔗 Monitor de Preços (Tentativa de Embed Direto)")
-
-# --- AVISO IMPORTANTE ---
-st.warning(
-    "**ATENÇÃO:** A incorporação direta de sites de e-commerce (como a Centauro) usando `<iframe>` é frequentemente bloqueada por políticas de segurança (CSP). Se você ver uma tela em branco ou um erro de carregamento, significa que o site bloqueou a visualização interna. Neste caso, a Opção 2 (Web Scraping) seria a alternativa funcional."
-)
+st.title("Monitor de Preços")
 
 # Dimensões para a visualização (ajuste conforme necessário)
 ALTURA_IFRAME = 700  # Altura em pixels para a visualização
