@@ -6,15 +6,26 @@ st.set_page_config(
     page_title="Monitor de Preços - Embed Centauro"
 )
 
-# Dimensões para a visualização (ajuste conforme necessário)
-ALTURA_IFRAME = 500  # Altura em pixels para a visualização
-# NOVO: Reduzimos a largura do iframe para deixar espaço à direita.
-# Exemplo: 90% da largura da coluna (que já é o máximo no layout 'wide')
-LARGURA_IFRAME_EMBED = "90%" 
-# Ajuste para deixar o espaço de rolagem vazio à direita
-BUFFER_ALTURA_STREAMLIT = 30 # Buffer para acomodar títulos/espaçamento no Streamlit
+# --- Configurações de Tamanho e Zoom ---
+ALTURA_IFRAME = 500  # Altura base do viewport do iframe em pixels
+LARGURA_IFRAME_EMBED = "800px" # Usar um valor fixo ou '100%' da coluna, mas 'scale' funciona melhor com base fixa
+BUFFER_ALTURA_STREAMLIT = 30 
 
-# Lista contendo APENAS as URLs dos produtos que você deseja monitorar.
+# NOVO: Fator de escala para simular o zoom. 
+# 1.0 = 100% (tamanho normal)
+# 0.8 = 80% (conteúdo parece 20% menor)
+FATOR_ZOOM = 0.8 
+
+# Calcula a largura e altura ajustadas para o 'scale'
+# O navegador renderiza o iframe no tamanho base (ex: 800px) e depois o escala.
+LARGURA_AJUSTADA = "800px" # Tamanho base maior que o desejado para compensar a escala
+ALTURA_AJUSTADA = "800px" # Tamanho base maior que o desejado para compensar a escala
+
+# O height final do componente Streamlit deve ser a altura base escalada, mais o buffer
+ALTURA_FINAL_STREAMLIT = int(int(ALTURA_AJUSTADA.replace("px", "")) * FATOR_ZOOM) + BUFFER_ALTURA_STREAMLIT
+# --- Fim das Configurações ---
+
+
 lista_de_urls = [
     "https://www.centauro.com.br/bermuda-masculina-oxer-ls-basic-new-984889.html?cor=04",
     "https://www.centauro.com.br/bermuda-masculina-oxer-mesh-mescla-983436.html?cor=MS",
@@ -25,7 +36,6 @@ st.title("Monitor de Preços")
 # Usamos enumerate para obter o índice (i) e a URL (link_produto)
 for i, link_produto in enumerate(lista_de_urls):
     
-    # Define um título baseado no índice (Ex: Produto 1, Produto 2, etc.)
     nome_produto = f"Produto Monitorado #{i + 1}" 
     
     st.header(nome_produto)
@@ -33,23 +43,30 @@ for i, link_produto in enumerate(lista_de_urls):
     # Exibe o link original
     st.markdown(f"**Link Original:** [{link_produto}]({link_produto})", unsafe_allow_html=True)
 
-    # --- AJUSTES AQUI ---
+    # --- AJUSTES COM CSS TRANSFORM: SCALE ---
     
-    # 1. Deslocamento vertical de 20px (usando style="margin-top: 20px;")
-    # 2. Largura reduzida (usando a nova LARGURA_IFRAME_EMBED)
+    # O style define:
+    # 1. Um tamanho base grande (800px) para o conteúdo caber.
+    # 2. transform: scale(FATOR_ZOOM) para diminuir a exibição.
+    # 3. transform-origin: top left; garante que o "zoom" parta do canto superior esquerdo.
     
     html_content = f"""
     <iframe 
         src="{link_produto}" 
-        width="{LARGURA_IFRAME_EMBED}" 
-        height="{ALTURA_IFRAME}px"
-        style="margin-top: 20px;" 
+        width="{LARGURA_AJUSTADA}" 
+        height="{ALTURA_AJUSTADA}"
+        style="
+            border: 1px solid #ccc; /* Para visualização */
+            transform: scale({FATOR_ZOOM}); 
+            transform-origin: top left;
+            margin-top: 20px;
+        " 
     ></iframe>
     """
 
     # Exibe o componente HTML/iFrame
-    # Manter a altura total para garantir que o conteúdo de baixo não seja cortado.
-    st.components.v1.html(html_content, height=ALTURA_IFRAME + BUFFER_ALTURA_STREAMLIT)
+    # IMPORTANTE: A altura (height) do st.components.v1.html deve refletir o TAMANHO FINAL ESCALADO
+    st.components.v1.html(html_content, height=ALTURA_FINAL_STREAMLIT)
     
     # SEPARADOR VISUAL entre os produtos
     st.markdown("---")
