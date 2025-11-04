@@ -1,6 +1,5 @@
 import streamlit as st
-from streamlit.components.v1 import html
-import urllib.parse # Adicionado para codificar o URL
+# Não precisamos mais do urllib.parse se não usarmos o Google Translate
 
 st.set_page_config(
     layout="wide", 
@@ -48,23 +47,12 @@ st.markdown("<h6>🔎 Monitor de Preço</h6>", unsafe_allow_html=True)
 # Iteramos sobre a lista de tuplas: (Preço, Link)
 for i, (preco_desejado, link_produto) in enumerate(precos_e_links):
     
-    link_final_iframe = link_produto # Link padrão para o iframe
+    exibir_iframe = True
     
-    # --- NOVO TRATAMENTO PARA SHOPEE: Usar Google Translate como Proxy ---
+    # --- LÓGICA DE BLOQUEIO DE IFRAME (Para Shopee) ---
     if "shopee.com.br" in link_produto:
+        exibir_iframe = False
         
-        # 1. Codifica o URL original para uso no parâmetro do Google Translate
-        encoded_url = urllib.parse.quote_plus(link_produto)
-        
-        # 2. Constrói o URL do Google Translate como proxy
-        # sl=auto (Source Language Auto), tl=pt (Target Language Portuguese), u=URL
-        link_final_iframe = f"https://translate.google.com/translate?sl=auto&tl=pt&u={encoded_url}"
-        
-        # Aviso para o usuário, pois a página terá o cabeçalho do Google Translate
-        st.info(f"ℹ️ O Produto {i + 1} (Shopee) está sendo carregado via **Google Translate** para evitar o erro de 'conexão recusada' no iFrame.")
-    
-    # --- FIM DO TRATAMENTO ---
-    
     nome_produto = f"{i + 1}" # Número de ordem
     
     # Exibição: O preço (primeiro elemento da tupla) é exibido em destaque e o link é oculto no texto "Acessar Produto"
@@ -74,26 +62,34 @@ for i, (preco_desejado, link_produto) in enumerate(precos_e_links):
         <p style="margin-bottom: 0; font-size: 1.2em; font-weight: bold; color: green;">
             {preco_desejado}  </p>
         <p style="margin-bottom: 0; font-size: 0.8em; max-width: 600px; overflow-wrap: break-word;">
-            <a href="{link_produto}" target="_blank">Acessar Produto</a> </p>
+            <a href="{link_produto}" target="_blank">Acessar Produto (NOVO TAB)</a> </p>
     </div>
     """, unsafe_allow_html=True)
     
-    html_content = f"""
-    <iframe 
-        src="{link_final_iframe}" 
-        width="{LARGURA_BASE_PIXELS}px" 
-        height="{ALTURA_BASE_PIXELS}px"
-        style="
-            border: 1px solid #ddd; /* Borda mais suave */
-            transform: scale({FATOR_ZOOM}); 
-            transform-origin: top left;
-            margin-top: 5px; 
-        " 
-    ></iframe>
-    """
-
-    # Exibe o componente HTML/iFrame, usando link_final_iframe
-    st.components.v1.html(html_content, height=ALTURA_FINAL_STREAMLIT)
+    if exibir_iframe:
+        # Carrega o iframe se o site permitir (como Centauro)
+        html_content = f"""
+        <iframe 
+            src="{link_produto}" 
+            width="{LARGURA_BASE_PIXELS}px" 
+            height="{ALTURA_BASE_PIXELS}px"
+            style="
+                border: 1px solid #ddd; /* Borda mais suave */
+                transform: scale({FATOR_ZOOM}); 
+                transform-origin: top left;
+                margin-top: 5px; 
+            " 
+        ></iframe>
+        """
+        # Exibe o componente HTML/iFrame
+        st.components.v1.html(html_content, height=ALTURA_FINAL_STREAMLIT)
+    else:
+        # --- LOG/AVISO VISUAL (O que você solicitou) ---
+        st.error(f"""
+        **⚠️ ATENÇÃO: O site da Shopee (Produto {nome_produto}) bloqueia o carregamento em iFrame (Conexão Recusada).** Para ver o conteúdo, **clique no link "Acessar Produto (NOVO TAB)"** logo acima.
+        """)
+        # Opcionalmente, você pode tentar carregar o link direto como um link clicável grande,
+        # mas evitamos o iframe para não poluir a tela com um erro visual.
     
     # SEPARADOR VISUAL entre os produtos
     st.markdown("---")
