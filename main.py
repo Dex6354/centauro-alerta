@@ -16,7 +16,6 @@ st.markdown(
         .block-container { padding-top: 0rem; }
         footer {visibility: hidden;}
         #MainMenu {visibility: hidden;}
-        div, span, strong, small { font-size: 0.75rem !important; }
     </style>
     """,
     unsafe_allow_html=True,
