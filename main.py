@@ -21,21 +21,6 @@ st.markdown(
         .stApp {
             padding-top: 0px !important; 
         }
-
-        /* ESTILO DO TÍTULO FIXO NO TOPO */
-        #titulo-topo {
-            position: fixed; /* Fixa o elemento no topo da janela */
-            top: 0;
-            left: 0;
-            width: 100%; /* Ocupa toda a largura */
-            background-color: black; /* Cor de fundo para cobrir o conteúdo que pode rolar por baixo */
-            padding: 10px 20px; /* Espaçamento interno */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Uma sombra sutil para destaque */
-            z-index: 1000; /* Garante que ele fique acima de outros elementos */
-            margin: 0;
-            text-align: left;
-            font-size: 0.3rem;
-        }
     </style>
     """,
     unsafe_allow_html=True,
