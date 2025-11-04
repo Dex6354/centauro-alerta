@@ -9,10 +9,10 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-        [data-testid="stHeader"] {
-            visibility: hidden;
-            height: 0%;
-        }
+        .block-container { padding-top: 0rem; }
+        footer {visibility: hidden;}
+        #MainMenu {visibility: hidden;}
+        div, span, strong, small { font-size: 0.75rem !important; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -34,7 +34,7 @@ lista_de_urls = [
 ]
 
 # Título principal diminuído (usando h2 em vez de h1)
-st.header("Monitor de Preços")
+st.markdown("<h6>🛒 Preços Mercados</h6>", unsafe_allow_html=True)
 
 # Usamos enumerate para obter o índice (i) e a URL (link_produto)
 for i, link_produto in enumerate(lista_de_urls):
