@@ -42,7 +42,7 @@ st.markdown("<h6>🛒 Preços Mercados</h6>", unsafe_allow_html=True)
 # Usamos enumerate para obter o índice (i) e a URL (link_produto)
 for i, link_produto in enumerate(lista_de_urls):
     
-    nome_produto = f"#{i + 1}" 
+    nome_produto = f"{i + 1}" 
     
     # Usamos HTML/CSS (display: flex) para alinhar os dois elementos horizontalmente.
     st.markdown(f"""
