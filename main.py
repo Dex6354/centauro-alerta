@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="Monitor de Preços - Embed Centauro"
 )
 
-# 1. CONFIGURAÇÃO DE ESTILO: Oculta o cabeçalho e ajusta o padding superior
+# 1. CONFIGURAÇÃO DE ESTILO AVANÇADA: Oculta o cabeçalho e fixa o título no topo
 st.markdown(
     """
     <style>
@@ -16,27 +16,34 @@ st.markdown(
             height: 0%;
         }
         
-        /* Remove o padding superior padrão do corpo da aplicação Streamlit */
+        /* Remove o padding superior do corpo da aplicação Streamlit, 
+           forçando o conteúdo a começar no topo da janela */
         .stApp {
             padding-top: 0px !important; 
         }
 
-        /* ESTILO PARA O TÍTULO PRINCIPAL (menor e sem margem superior) */
-        #titulo-principal {
-            margin-top: 0px !important;
-            padding-top: 15px !important; /* Pequeno padding superior para melhor visual */
-            padding-bottom: 10px !important;
-            margin-bottom: 10px !important; /* Separação do conteúdo abaixo */
-            font-size: 2em !important; /* Reduzindo o tamanho da fonte do H1 (Era ~2.5em/3em padrão) */
+        /* ESTILO DO TÍTULO FIXO NO TOPO */
+        #titulo-topo {
+            position: fixed; /* Fixa o elemento no topo da janela */
+            top: 0;
+            left: 0;
+            width: 100%; /* Ocupa toda a largura */
+            background-color: white; /* Cor de fundo para cobrir o conteúdo que pode rolar por baixo */
+            padding: 10px 20px; /* Espaçamento interno */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Uma sombra sutil para destaque */
+            z-index: 1000; /* Garante que ele fique acima de outros elementos */
+            margin: 0;
+            text-align: left;
         }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-# 2. INSERÇÃO DO TÍTULO NO TOPO DA PÁGINA (ele rolará junto)
+# 2. INSERÇÃO DO TÍTULO FIXO NO TOPO
+# Este H1 será fixo e ficará acima do conteúdo rolante abaixo
 st.markdown(
-    '<h1 id="titulo-principal">Monitor de Preços</h1>',
+    '<div id="titulo-topo"><h1>Monitor de Preços</h1></div>',
     unsafe_allow_html=True
 )
 
@@ -54,6 +61,13 @@ lista_de_urls = [
     "https://www.centauro.com.br/bermuda-masculina-oxer-ls-basic-new-984889.html?cor=04",
     "https://www.centauro.com.br/bermuda-masculina-oxer-mesh-mescla-983436.html?cor=MS",
 ]
+
+# Como o título agora está fixo (position: fixed), precisamos adicionar um espaçamento
+# no conteúdo principal (abaixo dele) para que o conteúdo não fique por baixo do título fixo.
+PADDING_DO_TITULO_FIXO = 60 # Deve ser maior que a altura do seu título fixo (que tem ~40px de padding)
+
+# 3. CONTEÚDO PRINCIPAL (COM PAD INICIAL)
+st.markdown(f'<div style="padding-top: {PADDING_DO_TITULO_FIXO}px;">', unsafe_allow_html=True)
 
 # Usamos enumerate para obter o índice (i) e a URL (link_produto)
 for i, link_produto in enumerate(lista_de_urls):
@@ -86,3 +100,5 @@ for i, link_produto in enumerate(lista_de_urls):
     
     # SEPARADOR VISUAL entre os produtos
     st.markdown("---")
+
+st.markdown('</div>', unsafe_allow_html=True) # Fecha a div de padding
