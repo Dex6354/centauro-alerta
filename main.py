@@ -34,9 +34,10 @@ ALTURA_FINAL_STREAMLIT = int(ALTURA_BASE_PIXELS * FATOR_ZOOM) + BUFFER_ALTURA_ST
 # --- ESTRUTURA DE DADOS UTILIZADA (LISTA DE TUPLAS) ---
 # A tupla é: (Preço, Link)
 precos_e_links = [
-    ("R$ 79,90", "https://www.centauro.com.br/bermuda-masculina-oxer-ls-basic-new-984889.html?cor=04"),
-    ("R$ 50,00", "https://www.centauro.com.br/bermuda-masculina-oxer-mesh-mescla-983436.html?cor=MS"),
-    ("R$ 50,00", "https://www.centauro.com.br/calcao-masculino-adams-liso-978059.html?cor=02"), # Não há conflito aqui
+    ("R$ 31,72", "https://www.centauro.com.br/bermuda-masculina-oxer-ls-basic-new-984889.html?cor=04"),
+    ("R$ 53,99", "https://www.centauro.com.br/bermuda-masculina-oxer-mesh-mescla-983436.html?cor=MS"),
+    ("R$ 31,49", "https://www.centauro.com.br/calcao-masculino-adams-liso-978059.html?cor=02"), # Não há conflito aqui
+    ("R$ 1794", "https://shopee.com.br/Xiaomi-Poco-X7-Pro-512GB-256GB-12-Ram-5G-Vers%C3%A3o-Global-NFC-Original-Lacrado-e-Envio-Imediato-ADS-i.1351433975.20698075298"), # Corrigido abaixo
 ]
 # --- FIM DA ESTRUTURA ---
 
@@ -46,6 +47,12 @@ st.markdown("<h6>🔎 Monitor de Preço</h6>", unsafe_allow_html=True)
 # Iteramos sobre a lista de tuplas: (Preço, Link)
 for i, (preco_desejado, link_produto) in enumerate(precos_e_links):
     
+    # CORREÇÃO APLICADA AQUI:
+    # Se o link for da Shopee, adicionamos o parâmetro para forçar a visualização na web
+    if "shopee.com.br" in link_produto:
+        # Como o seu link da Shopee não tem '?', podemos adicionar o parâmetro diretamente
+        link_produto += "?is_from_app=false" 
+        
     nome_produto = f"{i + 1}" # Número de ordem
     
     # Exibição: O preço (primeiro elemento da tupla) é exibido em destaque e o link é oculto no texto "Acessar Produto"
