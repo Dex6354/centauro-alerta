@@ -48,7 +48,7 @@ for i, link_produto in enumerate(lista_de_urls):
     st.markdown(f"""
     <div style="display: flex; align-items: baseline; gap: 15px; margin-bottom: -10px;">
         <h2 style="margin-bottom: 0;">{nome_produto}</h2>
-        <p style="margin-bottom: 0;"><strong>Link Original:</strong> <a href="{link_produto}" target="_blank">{link_produto}</a></p>
+        <p style="margin-bottom: 0;"><a href="{link_produto}" target="_blank">{link_produto}</a></p>
     </div>
     """, unsafe_allow_html=True)
     
