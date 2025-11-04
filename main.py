@@ -31,25 +31,24 @@ BUFFER_ALTURA_STREAMLIT = 30 # Espaço extra para a rolagem do componente
 # Calcula a altura final do componente Streamlit (altura base escalada + buffer)
 ALTURA_FINAL_STREAMLIT = int(ALTURA_BASE_PIXELS * FATOR_ZOOM) + BUFFER_ALTURA_STREAMLIT
 
-# --- ESTRUTURA DE DADOS AJUSTADA (INVERTIDA) ---
-# Chave: Preço (String)
-# Valor: URL (String)
-precos_e_links_invertidos = {
-    "R$ 79,90": "https://www.centauro.com.br/bermuda-masculina-oxer-ls-basic-new-984889.html?cor=04",
-    "R$ 50,00": "https://www.centauro.com.br/bermuda-masculina-oxer-mesh-mescla-983436.html?cor=MS",
-    "R$ 129,99": "https://www.centauro.com.br/calcao-masculino-adams-liso-978059.html?cor=02",
-}
+# --- ESTRUTURA DE DADOS UTILIZADA (LISTA DE TUPLAS) ---
+# A tupla é: (Preço, Link)
+precos_e_links = [
+    ("R$ 79,90", "https://www.centauro.com.br/bermuda-masculina-oxer-ls-basic-new-984889.html?cor=04"),
+    ("R$ 50,00", "https://www.centauro.com.br/bermuda-masculina-oxer-mesh-mescla-983436.html?cor=MS"),
+    ("R$ 50,00", "https://outrolink.com/produto-b.html"), # Não há conflito aqui
+]
 # --- FIM DA ESTRUTURA ---
 
 # Título principal diminuído (usando h2 em vez de h1)
 st.markdown("<h6>🛒 Preços Mercados</h6>", unsafe_allow_html=True)
 
-# Iteramos sobre a estrutura invertida: chave é o preço, valor é o link
-for i, (preco_desejado, link_produto) in enumerate(precos_e_links_invertidos.items()):
+# Iteramos sobre a lista de tuplas: (Preço, Link)
+for i, (preco_desejado, link_produto) in enumerate(precos_e_links):
     
     nome_produto = f"{i + 1}" # Número de ordem
     
-    # Usamos HTML/CSS (display: flex) para alinhar o número, o preço e a URL horizontalmente.
+    # Exibição: O preço (primeiro elemento da tupla) é exibido em destaque e o link é oculto no texto "Acessar Produto"
     st.markdown(f"""
     <div style="display: flex; align-items: baseline; gap: 15px; margin-bottom: -10px;">
         <h2 style="margin-bottom: 0;">{nome_produto})</h2>
