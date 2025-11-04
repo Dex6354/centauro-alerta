@@ -3,7 +3,7 @@ from streamlit.components.v1 import html
 
 st.set_page_config(
     layout="wide", 
-    page_title="Monitor de Preços - Embed Centauro"
+    page_title="Monitor de Preços"
 )
 
 st.markdown(
