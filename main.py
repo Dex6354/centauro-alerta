@@ -26,7 +26,7 @@ FATOR_ZOOM = 0.5
 LARGURA_BASE_PIXELS = "150%" # Tamanho base para o conteúdo caber
 ALTURA_BASE_PIXELS = 1000  # Tamanho base para o conteúdo caber
 
-BUFFER_ALTURA_STREAMLIT = 30 # Espaço extra para a rolagem do componente
+BUFFER_ALTURA_STREAMLIT = 100 # Espaço extra para a rolagem do componente
 
 # Calcula a altura final do componente Streamlit (altura base escalada + buffer)
 ALTURA_FINAL_STREAMLIT = int(ALTURA_BASE_PIXELS * FATOR_ZOOM) + BUFFER_ALTURA_STREAMLIT
