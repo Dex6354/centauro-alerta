@@ -24,7 +24,6 @@ st.markdown(
 
         /* ESTILO DO TÍTULO FIXO NO TOPO */
         #titulo-topo {
-            position: fixed; /* Fixa o elemento no topo da janela */
             top: 0;
             left: 0;
             width: 100%; /* Ocupa toda a largura */
