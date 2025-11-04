@@ -9,6 +9,10 @@ st.set_page_config(
 st.markdown(
     """
     <style>
+    [data-testid="stHeader"] {
+            visibility: hidden;
+            height: 0%;
+        }
         .block-container { padding-top: 0rem; }
         footer {visibility: hidden;}
         #MainMenu {visibility: hidden;}
