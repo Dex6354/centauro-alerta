@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit.components.v1 import html
+import urllib.parse # Adicionado para codificar o URL
 
 st.set_page_config(
     layout="wide", 
@@ -47,24 +48,22 @@ st.markdown("<h6>🔎 Monitor de Preço</h6>", unsafe_allow_html=True)
 # Iteramos sobre a lista de tuplas: (Preço, Link)
 for i, (preco_desejado, link_produto) in enumerate(precos_e_links):
     
-    link_final_iframe = link_produto
-    exibir_iframe = True
+    link_final_iframe = link_produto # Link padrão para o iframe
     
-    # --- TRATAMENTO PARA SHOPEE (E OUTROS QUE FORÇAM O APP) ---
+    # --- NOVO TRATAMENTO PARA SHOPEE: Usar Google Translate como Proxy ---
     if "shopee.com.br" in link_produto:
         
-        # 1. Tenta anexar o parâmetro de desativação de app
-        if '?' in link_produto:
-            # Se já tem '?', anexa com '&'
-            link_final_iframe = link_produto + "&is_from_app=false"
-        else:
-            # Se não tem, anexa com '?'
-            link_final_iframe = link_produto + "?is_from_app=false"
-
-        # 2. Estratégia de fallback: Ignorar o iframe, pois ele falha
-        # Se você tentou o parâmetro e ainda falha (o que parece ser o caso), 
-        # avisamos o usuário e mostramos o link direto no título, pulando o iframe.
-        exibir_iframe = False 
+        # 1. Codifica o URL original para uso no parâmetro do Google Translate
+        encoded_url = urllib.parse.quote_plus(link_produto)
+        
+        # 2. Constrói o URL do Google Translate como proxy
+        # sl=auto (Source Language Auto), tl=pt (Target Language Portuguese), u=URL
+        link_final_iframe = f"https://translate.google.com/translate?sl=auto&tl=pt&u={encoded_url}"
+        
+        # Aviso para o usuário, pois a página terá o cabeçalho do Google Translate
+        st.info(f"ℹ️ O Produto {i + 1} (Shopee) está sendo carregado via **Google Translate** para evitar o erro de 'conexão recusada' no iFrame.")
+    
+    # --- FIM DO TRATAMENTO ---
     
     nome_produto = f"{i + 1}" # Número de ordem
     
@@ -79,27 +78,22 @@ for i, (preco_desejado, link_produto) in enumerate(precos_e_links):
     </div>
     """, unsafe_allow_html=True)
     
-    if exibir_iframe:
-        # Apenas carrega o iframe se não for Shopee (ou se o parâmetro funcionar)
-        html_content = f"""
-        <iframe 
-            src="{link_final_iframe}" 
-            width="{LARGURA_BASE_PIXELS}px" 
-            height="{ALTURA_BASE_PIXELS}px"
-            style="
-                border: 1px solid #ddd; /* Borda mais suave */
-                transform: scale({FATOR_ZOOM}); 
-                transform-origin: top left;
-                margin-top: 5px; 
-            " 
-        ></iframe>
-        """
-        # Exibe o componente HTML/iFrame
-        st.components.v1.html(html_content, height=ALTURA_FINAL_STREAMLIT)
-    else:
-        # Mensagem para o usuário sobre a impossibilidade de embutir
-        st.warning(f"🛑 O link da **Shopee** (Produto {nome_produto}) está sendo forçado para o app. Use o link **'Acessar Produto'** acima para ver no navegador.")
+    html_content = f"""
+    <iframe 
+        src="{link_final_iframe}" 
+        width="{LARGURA_BASE_PIXELS}px" 
+        height="{ALTURA_BASE_PIXELS}px"
+        style="
+            border: 1px solid #ddd; /* Borda mais suave */
+            transform: scale({FATOR_ZOOM}); 
+            transform-origin: top left;
+            margin-top: 5px; 
+        " 
+    ></iframe>
+    """
 
+    # Exibe o componente HTML/iFrame, usando link_final_iframe
+    st.components.v1.html(html_content, height=ALTURA_FINAL_STREAMLIT)
     
     # SEPARADOR VISUAL entre os produtos
     st.markdown("---")
