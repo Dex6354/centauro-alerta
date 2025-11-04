@@ -34,7 +34,7 @@ st.markdown(
             z-index: 1000; /* Garante que ele fique acima de outros elementos */
             margin: 0;
             text-align: left;
-            font-size: 1.3rem;
+            font-size: 0.3rem;
         }
     </style>
     """,
