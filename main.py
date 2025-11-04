@@ -6,17 +6,38 @@ st.set_page_config(
     page_title="Monitor de Preços - Embed Centauro"
 )
 
+# 1. Mantenha o cabeçalho padrão do Streamlit oculto
 st.markdown(
     """
     <style>
+        /* Oculta o cabeçalho padrão do Streamlit */
         [data-testid="stHeader"] {
             visibility: hidden;
             height: 0%;
+        }
+        /* Opcional: Reduz a margem superior do corpo para aproximar o conteúdo do topo */
+        .stApp {
+            padding-top: 0.5rem; /* Pequeno espaço, se necessário, ou remova para 0 */
+        }
+        /* Estilo para o título que está no topo, removendo margem superior padrão se houver */
+        #titulo-principal {
+            margin-top: 0px !important;
+            padding-top: 0px !important;
         }
     </style>
     """,
     unsafe_allow_html=True,
 )
+
+# 2. Coloque o Título Principal Imediatamente no Topo
+# Usamos st.markdown com um ID para aplicar um estilo mais agressivo se necessário,
+# mas vamos começar com um st.title ou st.header com estilo para garantir o topo.
+# Usando st.markdown com h1 para ter mais controle sobre o estilo, e adicionando o ID
+st.markdown(
+    '<h1 id="titulo-principal">Monitor de Preços</h1>',
+    unsafe_allow_html=True
+)
+
 
 FATOR_ZOOM = 0.5
 
@@ -33,8 +54,8 @@ lista_de_urls = [
     "https://www.centauro.com.br/bermuda-masculina-oxer-mesh-mescla-983436.html?cor=MS",
 ]
 
-# Título principal diminuído (usando h2 em vez de h1)
-st.header("Monitor de Preços")
+# O st.header anterior foi substituído pelo st.markdown acima.
+# Abaixo, mantemos a estrutura de títulos para cada produto como estava:
 
 # Usamos enumerate para obter o índice (i) e a URL (link_produto)
 for i, link_produto in enumerate(lista_de_urls):
@@ -43,7 +64,7 @@ for i, link_produto in enumerate(lista_de_urls):
     
     # Usamos HTML/CSS (display: flex) para alinhar os dois elementos horizontalmente.
     st.markdown(f"""
-    <div style="display: flex; align-items: baseline; gap: 15px; margin-bottom: -10px;">
+    <div style="display: flex; align-items: baseline; gap: 15px; margin-top: 20px; margin-bottom: -10px;">
         <h2 style="margin-bottom: 0;">{nome_produto}</h2>
         <p style="margin-bottom: 0;"><strong>Link Original:</strong> <a href="{link_produto}" target="_blank">{link_produto}</a></p>
     </div>
